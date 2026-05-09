@@ -11,25 +11,25 @@ app.use(cors());
 
 // Auth Service Route
 app.use('/api/auth', createProxyMiddleware({ 
-    target: 'http://localhost:5001/api/auth', 
+    target: process.env.AUTH_URL || 'http://localhost:5001/api/auth', 
     changeOrigin: true 
 }));
 
 // Property Service Route
 app.use('/api/properties', createProxyMiddleware({ 
-    target: 'http://localhost:5002/api/properties', 
+    target: process.env.PROPERTY_URL || 'http://localhost:5002/api/properties', 
     changeOrigin: true 
 }));
 
 // Media Service Route
 app.use('/api/media', createProxyMiddleware({ 
-    target: 'http://localhost:5003/api/media', 
+    target: process.env.MEDIA_URL || 'http://localhost:5003/api/media', 
     changeOrigin: true 
 }));
 
 // Map Service Route
 app.use('/api/map', createProxyMiddleware({ 
-    target: 'http://localhost:5004/api/map', 
+    target: process.env.MAP_URL || 'http://localhost:5004/api/map', 
     changeOrigin: true 
 }));
 
