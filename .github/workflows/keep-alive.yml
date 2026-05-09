@@ -10,7 +10,11 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping API Gateway
+      - name: Ping All Services
         run: |
-          curl -s https://apnaghar-gateway.onrender.com/api/properties/all > /dev/null
-          echo "Pinged API Gateway"
+          curl -s https://apnaghar-gateway.onrender.com/ > /dev/null
+          curl -s https://apnaghar-property.onrender.com/ > /dev/null
+          curl -s https://apnaghar-auth.onrender.com/ > /dev/null
+          curl -s https://apnaghar-media.onrender.com/ > /dev/null
+          curl -s https://apnaghar-map.onrender.com/ > /dev/null
+          echo "Pinged all microservices"
