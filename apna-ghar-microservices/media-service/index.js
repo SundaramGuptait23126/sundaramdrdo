@@ -1,8 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('cloudinary').v2;
 require('dotenv').config({ path: __dirname + '/.env' });
 
 const app = express();
@@ -11,25 +11,28 @@ const PORT = process.env.PORT || 5003;
 app.use(cors());
 app.use(express.json());
 
-// Make uploads directory static so images can be viewed via URL
-app.use('/api/media/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// Ensure uploads folder exists
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-}
-
-// Multer Storage Configuration
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadDir);
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + path.extname(file.originalname));
-    }
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
+
+// Configure Multer Storage for Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'apnaghar_properties', // Cloudinary folder name
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+    public_id: (req, file) => {
+      // Remove the original extension because Cloudinary will append its own based on the format
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      const originalName = file.originalname.split('.')[0];
+      return `${originalName}-${uniqueSuffix}`;
+    },
+  },
+});
+
 const upload = multer({ storage: storage });
 
 const mediaRouter = express.Router();
@@ -42,9 +45,8 @@ mediaRouter.post('/upload', upload.single('image'), (req, res) => {
             return res.status(400).json({ success: false, message: 'No file uploaded' });
         }
         
-        // Return the full URL of the uploaded image (accessible through the Gateway)
-        const gatewayUrl = process.env.GATEWAY_URL || 'https://apnaghar-gateway.onrender.com';
-        const imageUrl = `${gatewayUrl}/api/media/uploads/${req.file.filename}`;
+        // The Cloudinary URL is returned in req.file.path
+        const imageUrl = req.file.path;
         
         res.status(201).json({ success: true, message: 'Image uploaded successfully!', imageUrl });
     } catch (error) {
@@ -57,7 +59,7 @@ mediaRouter.post('/upload', upload.single('image'), (req, res) => {
 app.use('/api/media', mediaRouter);
 
 app.get('/', (req, res) => {
-    res.send('Media Service is running');
+    res.send('Media Service is running with Cloudinary integration');
 });
 
 app.listen(PORT, () => {
