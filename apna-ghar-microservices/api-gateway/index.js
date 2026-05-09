@@ -9,27 +9,40 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 
+// Helper function to safely get the origin from a URL string
+const getOrigin = (urlStr) => {
+    try {
+        return new URL(urlStr).origin;
+    } catch (e) {
+        return urlStr;
+    }
+};
+
 // Auth Service Route
-app.use('/api/auth', createProxyMiddleware({ 
-    target: process.env.AUTH_URL || 'http://localhost:5001/api/auth', 
+app.use(createProxyMiddleware({ 
+    pathFilter: '/api/auth',
+    target: getOrigin(process.env.AUTH_URL || 'http://localhost:5001/api/auth'), 
     changeOrigin: true 
 }));
 
 // Property Service Route
-app.use('/api/properties', createProxyMiddleware({ 
-    target: process.env.PROPERTY_URL || 'http://localhost:5002/api/properties', 
+app.use(createProxyMiddleware({ 
+    pathFilter: '/api/properties',
+    target: getOrigin(process.env.PROPERTY_URL || 'http://localhost:5002/api/properties'), 
     changeOrigin: true 
 }));
 
 // Media Service Route
-app.use('/api/media', createProxyMiddleware({ 
-    target: process.env.MEDIA_URL || 'http://localhost:5003/api/media', 
+app.use(createProxyMiddleware({ 
+    pathFilter: '/api/media',
+    target: getOrigin(process.env.MEDIA_URL || 'http://localhost:5003/api/media'), 
     changeOrigin: true 
 }));
 
 // Map Service Route
-app.use('/api/map', createProxyMiddleware({ 
-    target: process.env.MAP_URL || 'http://localhost:5004/api/map', 
+app.use(createProxyMiddleware({ 
+    pathFilter: '/api/map',
+    target: getOrigin(process.env.MAP_URL || 'http://localhost:5004/api/map'), 
     changeOrigin: true 
 }));
 
