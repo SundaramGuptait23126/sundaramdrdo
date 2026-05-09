@@ -43,7 +43,8 @@ mediaRouter.post('/upload', upload.single('image'), (req, res) => {
         }
         
         // Return the full URL of the uploaded image (accessible through the Gateway)
-        const imageUrl = `http://localhost:5000/api/media/uploads/${req.file.filename}`;
+        const gatewayUrl = process.env.GATEWAY_URL || 'http://localhost:5000';
+        const imageUrl = `${gatewayUrl}/api/media/uploads/${req.file.filename}`;
         
         res.status(201).json({ success: true, message: 'Image uploaded successfully!', imageUrl });
     } catch (error) {
