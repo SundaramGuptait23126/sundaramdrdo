@@ -47,6 +47,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: displayName, email, password, role })
       });
+      
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.indexOf("application/json") === -1) {
+        return { error: new Error("Server is starting up or temporarily unavailable. Please try again in a minute.") };
+      }
+
       const data = await res.json();
       if (!data.success) {
         return { error: new Error(data.message) };
@@ -64,6 +70,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
       });
+      
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.indexOf("application/json") === -1) {
+        return { error: new Error("Server is starting up or temporarily unavailable. Please try again in a minute.") };
+      }
+
       const data = await res.json();
       if (!data.success) {
         return { error: new Error(data.message) };

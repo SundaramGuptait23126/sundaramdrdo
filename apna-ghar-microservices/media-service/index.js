@@ -62,6 +62,12 @@ app.get('/', (req, res) => {
     res.send('Media Service is running with Cloudinary integration');
 });
 
+// Add error handling middleware to catch multer errors
+app.use((err, req, res, next) => {
+    console.error("MULTER OR CLOUDINARY ERROR:", err);
+    res.status(500).json({ success: false, message: 'File upload error', error: err.message || err });
+});
+
 app.listen(PORT, () => {
     console.log(`Media Service is running on http://localhost:${PORT}`);
 });
