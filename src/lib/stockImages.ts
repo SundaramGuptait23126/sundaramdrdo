@@ -16,7 +16,12 @@ export function getStockImages(propertyType: string): string[] {
 
 export function getPropertyImage(images: string[] | null | undefined, propertyType: string, index = 0): string {
   if (images && images.length > 0 && images[index]) {
-    const img = images[index];
+    let img = images[index];
+    // Fix localhost URLs from backend
+    if (img.includes("localhost:5000")) {
+      img = img.replace(/http:\/\/localhost:5000/g, "https://apnaghar-gateway.onrender.com");
+    }
+    
     // If it's a valid URL or import path, use it
     if (img.startsWith("http") || img.startsWith("/") || img.startsWith("data:") || img.includes("assets")) {
       return img;
