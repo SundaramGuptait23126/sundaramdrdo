@@ -79,7 +79,7 @@ const MapExplorer = () => {
   useEffect(() => {
     const fetchProps = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/map/properties");
+        const res = await fetch("https://apnaghar-gateway.onrender.com/api/map/properties");
         const data = await res.json();
         if (data.success) {
           setDbProperties(data.properties.map((p: any) => ({

@@ -26,7 +26,7 @@ const Index = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/properties/all");
+        const res = await fetch("https://apnaghar-gateway.onrender.com/api/properties/all");
         const data = await res.json();
         if (data.success && data.properties) {
           setDbProperties(data.properties.map((p: any) => ({

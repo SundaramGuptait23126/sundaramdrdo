@@ -24,7 +24,7 @@ const MyProperties = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/properties/my", {
+      const res = await fetch("https://apnaghar-gateway.onrender.com/api/properties/my", {
         headers: {
           "Authorization": `Bearer ${token}`
         }
@@ -50,7 +50,7 @@ const MyProperties = () => {
     
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/properties/${id}`, {
+      const res = await fetch(`https://apnaghar-gateway.onrender.com/api/properties/${id}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${token}`
