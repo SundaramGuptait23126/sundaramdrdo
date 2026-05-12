@@ -46,6 +46,13 @@ app.use(createProxyMiddleware({
     changeOrigin: true 
 }));
 
+// Compare Service Route
+app.use(createProxyMiddleware({ 
+    pathFilter: '/api/compare',
+    target: getOrigin(process.env.COMPARE_URL || 'http://localhost:5005/api/compare'), 
+    changeOrigin: true 
+}));
+
 app.get('/', (req, res) => {
     res.send('API Gateway is running. Welcome to Apna Ghar Microservices!');
 });

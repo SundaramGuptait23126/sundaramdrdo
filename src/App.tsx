@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { CompareProvider } from "@/contexts/CompareContext";
 import Navbar from "@/components/Navbar";
 import ScrollToTop from "@/components/ScrollToTop";
 import Footer from "@/components/Footer";
@@ -29,34 +30,36 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AuthProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <ScrollToTop />
-          <div className="flex min-h-screen flex-col">
-            <Navbar />
-            <main className="flex-1">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/properties" element={<Properties />} />
-                <Route path="/property/:id" element={<PropertyDetail />} />
-                <Route path="/ai-estimator" element={<AIEstimator />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/post-property" element={<PostProperty />} />
-                <Route path="/admin" element={<AdminDashboard />} />
-                <Route path="/emi-calculator" element={<EMICalculator />} />
-                <Route path="/saved" element={<SavedProperties />} />
-                <Route path="/compare" element={<CompareProperties />} />
-                <Route path="/insights" element={<LocalityInsights />} />
-                <Route path="/map" element={<MapExplorer />} />
-                <Route path="/my-properties" element={<MyProperties />} />
-                <Route path="/inquiries" element={<Inquiries />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-        </BrowserRouter>
+        <CompareProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <ScrollToTop />
+            <div className="flex min-h-screen flex-col">
+              <Navbar />
+              <main className="flex-1">
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/properties" element={<Properties />} />
+                  <Route path="/property/:id" element={<PropertyDetail />} />
+                  <Route path="/ai-estimator" element={<AIEstimator />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/post-property" element={<PostProperty />} />
+                  <Route path="/admin" element={<AdminDashboard />} />
+                  <Route path="/emi-calculator" element={<EMICalculator />} />
+                  <Route path="/saved" element={<SavedProperties />} />
+                  <Route path="/compare" element={<CompareProperties />} />
+                  <Route path="/insights" element={<LocalityInsights />} />
+                  <Route path="/map" element={<MapExplorer />} />
+                  <Route path="/my-properties" element={<MyProperties />} />
+                  <Route path="/inquiries" element={<Inquiries />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
+          </BrowserRouter>
+        </CompareProvider>
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>

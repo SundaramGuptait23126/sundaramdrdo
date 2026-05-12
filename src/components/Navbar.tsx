@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCompare } from "@/contexts/CompareContext";
 
 interface MegaMenuData {
   label: string;
@@ -113,6 +114,7 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, userRole, signOut } = useAuth();
+  const { compareIds } = useCompare();
   const megaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { setActiveMega(null); setMobileOpen(false); }, [location.pathname]);
@@ -215,8 +217,9 @@ const Navbar = () => {
                       <Link to="/saved" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-card-foreground hover:bg-secondary">
                         <Bookmark className="h-4 w-4" /> Saved Properties
                       </Link>
-                      <Link to="/compare" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-card-foreground hover:bg-secondary">
-                        <GitCompare className="h-4 w-4" /> Compare
+                      <Link to="/compare" onClick={() => setUserMenuOpen(false)} className="flex items-center justify-between rounded-md px-3 py-2 text-sm text-card-foreground hover:bg-secondary">
+                        <span className="flex items-center gap-2"><GitCompare className="h-4 w-4" /> Compare</span>
+                        {compareIds.length > 0 && <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-bold text-accent-foreground">{compareIds.length}</span>}
                       </Link>
                       <Link to="/post-property" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-card-foreground hover:bg-secondary">
                         <Plus className="h-4 w-4" /> Post Property
@@ -324,8 +327,11 @@ const Navbar = () => {
               { to: "/map", label: "Map View", icon: MapPin },
             ].map((l) => (
               <Link key={l.to} to={l.to} onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-white/80 hover:bg-white/10 hover:text-white">
-                <l.icon className="h-4 w-4" />{l.label}
+                className="flex items-center justify-between rounded-md px-3 py-2 text-sm text-white/80 hover:bg-white/10 hover:text-white">
+                <span className="flex items-center gap-2"><l.icon className="h-4 w-4" />{l.label}</span>
+                {l.to === "/compare" && compareIds.length > 0 && (
+                  <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-bold text-accent-foreground">{compareIds.length}</span>
+                )}
               </Link>
             ))}
             {user && (

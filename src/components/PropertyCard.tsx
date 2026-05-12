@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { MapPin, Maximize, BedDouble, Brain, TrendingUp, IndianRupee, Heart, ChevronLeft, ChevronRight, Shield, User, Eye, Clock } from "lucide-react";
+import { MapPin, Maximize, BedDouble, Brain, TrendingUp, IndianRupee, Heart, ChevronLeft, ChevronRight, Shield, User, Eye, Clock, GitCompare } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { type Property, formatPrice, formatArea } from "@/lib/mockData";
 import { getPropertyImage } from "@/lib/stockImages";
+import { useCompare } from "@/contexts/CompareContext";
 
 interface Props {
   property: Property;
@@ -13,6 +14,8 @@ interface Props {
 const PropertyCard = ({ property, layout = "grid" }: Props) => {
   const [liked, setLiked] = useState(false);
   const [imgIdx, setImgIdx] = useState(0);
+  const { compareIds, toggleCompareId } = useCompare();
+  const isCompared = compareIds.includes(property.id);
 
   const typeLabels: Record<string, string> = { flat: "Apartment", villa: "Villa", plot: "Plot", commercial: "Commercial" };
   const isRental = property.listing_type === "rent";
@@ -64,10 +67,17 @@ const PropertyCard = ({ property, layout = "grid" }: Props) => {
             </div>
           </div>
         </Link>
-        <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); setLiked(!liked); }}
-          className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-sm hover:bg-white transition-colors">
-          <Heart className={`h-4 w-4 transition-colors ${liked ? "fill-accent text-accent" : "text-muted-foreground"}`} />
-        </button>
+        <div className="absolute right-3 top-3 z-10 flex items-center gap-1.5">
+          <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleCompareId(property.id); }}
+            title={isCompared ? "Remove from Compare" : "Add to Compare"}
+            className={`flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-sm hover:bg-white transition-colors ${isCompared ? "ring-2 ring-accent" : ""}`}>
+            <GitCompare className={`h-4 w-4 transition-colors ${isCompared ? "text-accent" : "text-muted-foreground"}`} />
+          </button>
+          <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); setLiked(!liked); }}
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-sm hover:bg-white transition-colors">
+            <Heart className={`h-4 w-4 transition-colors ${liked ? "fill-accent text-accent" : "text-muted-foreground"}`} />
+          </button>
+        </div>
       </div>
     );
   }
@@ -150,10 +160,17 @@ const PropertyCard = ({ property, layout = "grid" }: Props) => {
           </div>
         </div>
       </Link>
-      <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); setLiked(!liked); }}
-        className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-sm hover:bg-white transition-colors">
-        <Heart className={`h-4 w-4 transition-colors ${liked ? "fill-accent text-accent" : "text-muted-foreground"}`} />
-      </button>
+      <div className="absolute right-3 top-3 z-10 flex items-center gap-1.5">
+        <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleCompareId(property.id); }}
+          title={isCompared ? "Remove from Compare" : "Add to Compare"}
+          className={`flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-sm hover:bg-white transition-colors ${isCompared ? "ring-2 ring-accent" : ""}`}>
+          <GitCompare className={`h-4 w-4 transition-colors ${isCompared ? "text-accent" : "text-muted-foreground"}`} />
+        </button>
+        <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); setLiked(!liked); }}
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-sm hover:bg-white transition-colors">
+          <Heart className={`h-4 w-4 transition-colors ${liked ? "fill-accent text-accent" : "text-muted-foreground"}`} />
+        </button>
+      </div>
     </div>
   );
 };
