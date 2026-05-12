@@ -17,4 +17,5 @@ jobs:
           curl -s https://apnaghar-auth.onrender.com/ > /dev/null
           curl -s https://apnaghar-media.onrender.com/ > /dev/null
           curl -s https://apnaghar-map.onrender.com/ > /dev/null
+          curl -s https://apnaghar-compare.onrender.com/ > /dev/null
           echo "Pinged all microservices"
