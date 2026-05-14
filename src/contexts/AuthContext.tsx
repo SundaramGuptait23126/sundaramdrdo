@@ -42,11 +42,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signUp = async (email: string, password: string, displayName: string, role: string) => {
     try {
-      const res = await fetch("https://apnaghar-gateway.onrender.com/api/auth/register", {
+      let res = await fetch("https://apnaghar-gateway.onrender.com/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: displayName, email, password, role })
-      });
+      }).catch(() => null);
+
+      if (!res || !res.ok) {
+        res = await fetch("http://localhost:5000/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: displayName, email, password, role })
+        }).catch(() => null);
+      }
+
+      if (!res) {
+        return { error: new Error("Backend service is offline. Please start local microservices.") };
+      }
       
       const contentType = res.headers.get("content-type");
       if (contentType && contentType.indexOf("application/json") === -1) {
@@ -57,6 +69,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (!data.success) {
         return { error: new Error(data.message) };
       }
+
+      if (data.token && data.user) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        setUser(data.user);
+        setUserRole(data.user.role);
+      }
+
       return { error: null };
     } catch (err: any) {
       return { error: err };
@@ -65,11 +85,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      const res = await fetch("https://apnaghar-gateway.onrender.com/api/auth/login", {
+      let res = await fetch("https://apnaghar-gateway.onrender.com/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
-      });
+      }).catch(() => null);
+
+      if (!res || !res.ok) {
+        res = await fetch("http://localhost:5000/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        }).catch(() => null);
+      }
+
+      if (!res) {
+        return { error: new Error("Backend service is offline. Please start local microservices.") };
+      }
       
       const contentType = res.headers.get("content-type");
       if (contentType && contentType.indexOf("application/json") === -1) {

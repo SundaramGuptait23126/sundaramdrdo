@@ -40,8 +40,8 @@ const Auth = () => {
       if (error) {
         toast({ title: "Sign Up Failed", description: error.message, variant: "destructive" });
       } else {
-        toast({ title: "Account Created!", description: "You can now log in using your new account." });
-        setIsLogin(true); // Automatically switch to Login mode
+        toast({ title: "Account Created!", description: "Welcome to ApnaGhar!" });
+        navigate("/");
       }
     }
     setLoading(false);

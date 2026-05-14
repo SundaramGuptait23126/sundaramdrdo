@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCompare } from "@/contexts/CompareContext";
+import ProfileModal from "./ProfileModal";
 
 interface MegaMenuData {
   label: string;
@@ -109,6 +110,7 @@ const commercialMenu: MegaMenuData = {
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [activeMega, setActiveMega] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
@@ -214,6 +216,15 @@ const Navbar = () => {
                         <p className="text-sm font-semibold text-card-foreground truncate">{user.email}</p>
                         <p className="text-xs text-muted-foreground capitalize">{userRole || "User"}</p>
                       </div>
+                      <button
+                        onClick={() => {
+                          setUserMenuOpen(false);
+                          setIsProfileModalOpen(true);
+                        }}
+                        className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-card-foreground hover:bg-secondary font-medium"
+                      >
+                        <User className="h-4 w-4 text-primary" /> My Profile Details
+                      </button>
                       <Link to="/saved" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-card-foreground hover:bg-secondary">
                         <Bookmark className="h-4 w-4" /> Saved Properties
                       </Link>
@@ -367,6 +378,7 @@ const Navbar = () => {
       )}
 
       {userMenuOpen && <div className="fixed inset-0 z-40" onClick={() => setUserMenuOpen(false)} />}
+      <ProfileModal open={isProfileModalOpen} onOpenChange={setIsProfileModalOpen} />
     </nav>
   );
 };

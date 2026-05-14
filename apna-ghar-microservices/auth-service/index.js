@@ -45,7 +45,20 @@ authRouter.post('/register', async (req, res) => {
             [name, email, hashedPassword, userRole]
         );
 
-        res.status(201).json({ success: true, message: 'User registered successfully!', userId: result.insertId });
+        // Generate JWT Token
+        const token = jwt.sign(
+            { id: result.insertId, email, role: userRole },
+            process.env.JWT_SECRET,
+            { expiresIn: '7d' }
+        );
+
+        res.status(201).json({ 
+            success: true, 
+            message: 'User registered successfully!', 
+            userId: result.insertId,
+            token,
+            user: { id: result.insertId, name, email, role: userRole }
+        });
 
     } catch (error) {
         console.error("Register Error:", error);

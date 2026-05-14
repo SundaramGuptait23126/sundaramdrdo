@@ -8,6 +8,7 @@ import { CompareProvider } from "@/contexts/CompareContext";
 import Navbar from "@/components/Navbar";
 import ScrollToTop from "@/components/ScrollToTop";
 import Footer from "@/components/Footer";
+import MobileBottomNav from "@/components/MobileBottomNav";
 import Index from "./pages/Index";
 import Properties from "./pages/Properties";
 import PropertyDetail from "./pages/PropertyDetail";
@@ -35,7 +36,7 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <ScrollToTop />
-            <div className="flex min-h-screen flex-col">
+            <div className="flex min-h-screen flex-col pb-16 md:pb-0">
               <Navbar />
               <main className="flex-1">
                 <Routes>
@@ -57,6 +58,7 @@ const App = () => (
                 </Routes>
               </main>
               <Footer />
+              <MobileBottomNav />
             </div>
           </BrowserRouter>
         </CompareProvider>
