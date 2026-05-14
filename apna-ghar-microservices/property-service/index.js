@@ -41,14 +41,8 @@ const authenticateUser = (req, res, next) => {
 
 const propertyRouter = express.Router();
 
-// Simple In-Memory Cache
-let propertyCache = {};
-const CACHE_DURATION_MS = 60000; // 60 seconds
-
-// Helper to clear cache when data changes
-const clearCache = () => {
-    propertyCache = {};
-};
+// Local In-Memory Cache removed to maintain a fully STATELESS architecture
+// for distributed horizontal scaling across multiple Render accounts.
 
 // 1. ADD Property (Requires Login)
 propertyRouter.post('/add', authenticateUser, async (req, res) => {
@@ -75,7 +69,6 @@ propertyRouter.post('/add', authenticateUser, async (req, res) => {
         });
 
         await newProperty.save();
-        clearCache(); // Invalidate cache
 
         res.status(201).json({ success: true, message: 'Property added successfully!', propertyId: newProperty._id });
 
@@ -107,21 +100,7 @@ propertyRouter.get('/all', async (req, res) => {
             query.bhk = Number(bhk);
         }
 
-        const cacheKey = JSON.stringify(query);
-
-        // Check if data is in cache and still valid
-        if (propertyCache[cacheKey] && (Date.now() - propertyCache[cacheKey].timestamp < CACHE_DURATION_MS)) {
-            return res.json({ success: true, properties: propertyCache[cacheKey].data, cached: true });
-        }
-
         const properties = await Property.find(query).sort({ createdAt: -1 });
-        
-        // Save to cache
-        propertyCache[cacheKey] = {
-            data: properties,
-            timestamp: Date.now()
-        };
-
         res.json({ success: true, properties, cached: false });
 
     } catch (error) {
@@ -155,7 +134,6 @@ propertyRouter.delete('/:id', authenticateUser, async (req, res) => {
         }
 
         await Property.findByIdAndDelete(req.params.id);
-        clearCache(); // Invalidate cache
         
         res.json({ success: true, message: 'Property deleted successfully.' });
 
