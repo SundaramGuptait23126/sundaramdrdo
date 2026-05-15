@@ -27,7 +27,7 @@ const Inquiries = () => {
       if (!user) return;
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("https://apnaghar-gateway.onrender.com/api/properties/inquiries", {
+        const res = await fetch("https://apnaghar-load-balancer.onrender.com/api/properties/inquiries", {
           headers: {
             "Authorization": `Bearer ${token}`
           }

@@ -30,7 +30,7 @@ const PropertyDetail = () => {
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        const res = await fetch("https://apnaghar-gateway.onrender.com/api/properties/all");
+        const res = await fetch("https://apnaghar-load-balancer.onrender.com/api/properties/all");
         const data = await res.json();
         
         if (data.success && data.properties) {
@@ -133,7 +133,7 @@ const PropertyDetail = () => {
     e.preventDefault();
     if (!property.id.startsWith("seed-")) {
       try {
-        const res = await fetch("https://apnaghar-gateway.onrender.com/api/properties/inquire", {
+        const res = await fetch("https://apnaghar-load-balancer.onrender.com/api/properties/inquire", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

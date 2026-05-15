@@ -43,7 +43,7 @@ const CompareProperties = () => {
       setLoading(true);
       try {
         // Try production gateway first
-        let res = await fetch("https://apnaghar-gateway.onrender.com/api/compare/matrix", {
+        let res = await fetch("https://apnaghar-load-balancer.onrender.com/api/compare/matrix", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ propertyIds: compareIds })
@@ -51,7 +51,7 @@ const CompareProperties = () => {
 
         // Fallback to localhost gateway if production fails
         if (!res || !res.ok) {
-          res = await fetch("http://localhost:5000/api/compare/matrix", {
+          res = await fetch("https://apnaghar-load-balancer.onrender.com/api/compare/matrix", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ propertyIds: compareIds })
