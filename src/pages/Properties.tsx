@@ -42,7 +42,7 @@ const Properties = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const res = await fetch("https://apnaghar-load-balancer.onrender.com/api/properties/all");
+        const res = await fetch("/api/properties/all");
         const data = await res.json();
         if (data.success && data.properties) {
           setDbProperties(data.properties.map((p: any) => ({

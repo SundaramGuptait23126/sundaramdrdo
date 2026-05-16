@@ -137,7 +137,7 @@ const PostProperty = () => {
         const formData = new FormData();
         formData.append("image", file);
 
-        const uploadRes = await fetch("https://apnaghar-load-balancer.onrender.com/api/media/upload", {
+        const uploadRes = await fetch("/api/media/upload", {
           method: "POST",
           body: formData,
         });
@@ -164,7 +164,7 @@ const PostProperty = () => {
 
       console.log("Submitting property:", propertyData);
 
-      const res = await fetch("https://apnaghar-load-balancer.onrender.com/api/properties/add", {
+      const res = await fetch("/api/properties/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

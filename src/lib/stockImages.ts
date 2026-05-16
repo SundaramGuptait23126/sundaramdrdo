@@ -19,7 +19,7 @@ export function getPropertyImage(images: string[] | null | undefined, propertyTy
     let img = images[index];
     // Fix localhost URLs from backend
     if (img.includes("localhost:5000")) {
-      img = img.replace(/http:\/\/localhost:5000/g, "https://apnaghar-gateway.onrender.com");
+      img = img.replace(/http:\/\/localhost:5000/g, "");
     }
     
     // If it's a valid URL or import path, use it

@@ -42,14 +42,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signUp = async (email: string, password: string, displayName: string, role: string) => {
     try {
-      let res = await fetch("https://apnaghar-load-balancer.onrender.com/api/auth/register", {
+      let res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: displayName, email, password, role })
       }).catch(() => null);
 
       if (!res || !res.ok) {
-        res = await fetch("https://apnaghar-load-balancer.onrender.com/api/auth/register", {
+        res = await fetch("/api/auth/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name: displayName, email, password, role })
@@ -85,14 +85,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      let res = await fetch("https://apnaghar-load-balancer.onrender.com/api/auth/login", {
+      let res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
       }).catch(() => null);
 
       if (!res || !res.ok) {
-        res = await fetch("https://apnaghar-load-balancer.onrender.com/api/auth/login", {
+        res = await fetch("/api/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password })
